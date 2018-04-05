@@ -1,6 +1,6 @@
 class ArtistsController < ApplicationController
   before_action :set_preferences, only: [:index, :new]
-  
+
   def index
     if @preferences && @preferences.artist_sort_order
       @artists = Artist.order(name: @preferences.artist_sort_order)
@@ -14,8 +14,8 @@ class ArtistsController < ApplicationController
   end
 
   def new
-    if Preference.find_by(allow_create_artists: false)
-      redirect_to(artists_path)
+    if @preferences && !@preferences.allow_create_artists
+      redirect_to artists_path
     else
       @artist = Artist.new
     end
